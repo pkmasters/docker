@@ -1,0 +1,20 @@
+services:
+  semaphore:
+    ports:
+      - 3000:3000
+    image: semaphoreui/semaphore:v2.11.3
+    environment:
+      SEMAPHORE_DB_DIALECT: bolt
+      SEMAPHORE_ADMIN: administrator
+      SEMAPHORE_ADMIN_PASSWORD: hopefully-a-secure-password
+      SEMAPHORE_ADMIN_NAME: administrator
+      SEMAPHORE_ADMIN_EMAIL: administrator@domain.com
+      ANSIBLE_HOST_KEY_CHECKING: false
+    volumes:
+      - semaphore_data:/var/lib/semaphore
+      - semaphore_config:/etc/semaphore
+      - semaphore_tmp:/tmp/semaphore
+volumes:
+  semaphore_data: null
+  semaphore_config: null
+  semaphore_tmp: null

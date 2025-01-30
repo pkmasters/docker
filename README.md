@@ -13,3 +13,7 @@ Contributions are welcome! If you have suggestions for new configurations or imp
 ## License
 
 This project is licensed under the MIT License – see the LICENSE file for details.
+
+---
+
+Thank you for checking out my docker compose repo! Happy deploying!

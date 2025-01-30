@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - /db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: uvdesk
+      MYSQL_ROOT_PASSWORD: hopefully-a-secure-password
+      MYSQL_USER: uvdesk
+      MYSQL_PASSWORD: hopefully-a-secure-password
+  uvdesk:
+    image: nuttcorp/uvdesk:latest
+    depends_on:
+      - db
+    tty: true
+    environment:
+      MYSQL_USER: uvdesk
+      MYSQL_PASSWORD: hopefully-a-secure-password
+      MYSQL_ROOT_PASSWORD: hopefully-a-secure-password
+      MYSQL_DATABASE: uvdesk
+    ports:
+      - 8080:80
+volumes:
+  db_data:

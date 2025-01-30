@@ -1,0 +1,19 @@
+version: "3"
+services:
+  crafty:
+    container_name: crafty_container
+    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    restart: always
+    environment:
+      - TZ=TIMEZONE
+    ports:
+      - 8443:8443 # HTTPS
+      - 8123:8123 # DYNMAP
+      - 19132:19132/udp # BEDROCK
+      - 25565:25565/tcp # MC SERV PORTS *OPEN MORE IF NEEDED*
+    volumes:
+      - ./crafty4/backups:/crafty/backups
+      - ./crafty4/logs:/crafty/logs
+      - ./crafty4/servers:/crafty/servers
+      - ./crafty4/config:/crafty/app/config
+      - ./crafty4/import:/crafty/import

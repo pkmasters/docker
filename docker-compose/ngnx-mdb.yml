@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+    depends_on:
+      - mariadb
+  mariadb:
+    restart: always
+    image: mariadb:latest
+    ports:
+      - 33060:3306
+    volumes:
+      - /mariadb:/var/lib/msql
+    environment:
+      - MARIADB_ROOT_PASSWORD=$(MARIADB_ROOT_PASSWORD)
+networks: {}

@@ -1,4 +1,4 @@
-# Docker
+# 🐳 Docker Repository
 
 This repository contains a collection of Docker Compose configurations and Dockerfiles for deploying various self-hosted services and applications. These setups aim to simplify containerized deployments, making it easier to manage and scale applications.
 ## Overview

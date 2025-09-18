@@ -1,0 +1,68 @@
+services:
+  adguardhome:
+    image: adguard/adguardhome
+    container_name: adguardhome
+    hostname: adguard
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 67:67/udp
+    # - 68:68/udp  #not needed, for DHCP clients only
+      - 784:784/udp
+      - 853:853/tcp
+      - 853:853/udp
+      - 3000:3000/tcp
+      - 80:80/tcp
+      - 443:443/tcp
+      - 443:443/udp
+      - 8853:8853/udp
+      - 5443:5443/tcp
+      - 5443:5443/udp
+    volumes:
+      - ./etc/localtime:/etc/localtime:ro
+      - ./workdir:/opt/adguardhome/work
+      - ./confdir:/opt/adguardhome/conf
+    restart: unless-stopped
+    networks:
+      services:
+        ipv4_address: 172.40.0.2 #the static IP address of the Adguard container
+  ####################################################################################
+
+  wg-easy:
+    #environment:
+    #  Optional:
+    #  - PORT=51821
+    #  - HOST=0.0.0.0
+    #  - INSECURE=false
+
+    image: ghcr.io/wg-easy/wg-easy:15
+    container_name: wg-easy
+    volumes:
+      - ./etc_wireguard:/etc/wireguard
+      - //lib/modules:/lib/modules:ro
+    ports:
+      - 51820:51820/udp
+      - 8888:51821/tcp
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+      # - NET_RAW # ⚠️ Uncomment if using Podman
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv6.conf.all.disable_ipv6=0
+      - net.ipv6.conf.all.forwarding=1
+      - net.ipv6.conf.default.forwarding=1
+    networks:
+      services:
+        ipv4_address: 172.40.0.3 #the static IP address of the wireguard container
+### Creates a new docker network named "docker_configs_services" in which the two above containers will reside
+
+networks:
+  services:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.40.0.0/16
+          gateway: 172.40.0.1
